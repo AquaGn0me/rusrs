@@ -6,16 +6,18 @@ body {
 }
 
 header {
-    background-color: #001232;
+    background-color: #0F1A2E;
     color: white;
     padding: 15px;
     margin: 0;
     text-align: left;
-    border-bottom: 2px solid white;
+    border-bottom: 1px solid white;
     font-size: 20px;
     font-weight: bold;
 }
-
+h1 {
+    color: white;
+}
 .container {
     display: flex; /* Use flexbox for layout */
     gap: 40px; /* Space between the two divs */
@@ -27,18 +29,33 @@ header {
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #0F1A2E;
+    color: white;
 }
 
 textarea {
     width: 92%;
-    height: 150px;
+    height: 300px;
     padding: 10px;
     font-size: 16px;
+    background-color: #0F1A2E;
+    color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: none;
 }
 
-.output-container {
-    background-color: #f9f9f9; /* Light background for the output */
+button {
+    border: none;
+    background-color: #4CAF50; /* Green background color */
+    padding: 10px 20px; /* Add horizontal padding */
+    color: white;   
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px; /* Slightly less rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #39813c; /* Darker green on hover */
 }
