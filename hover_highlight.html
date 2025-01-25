@@ -6,19 +6,11 @@
   .highlighted {
     background-color: yellow;
   }
-  #popup {
-    position: absolute;
-    background-color: lightblue;
-    border: 1px solid black;
-    padding: 5px;
-    z-index: 10;
-    visibility: hidden;
-  }
 </style>
 </head>
 <body>
 
-<div id="popup"></div>
+<div></div>
 
 <p id="randomText">
   This is some random text to demonstrate the hover highlight effect.
@@ -41,7 +33,7 @@
       if (e.target.tagName === 'SPAN') {
         const sentenceText = e.target.textContent;
         popupElement.textContent = sentenceText;
-        popupElement.style.top = (e.clientY + 10) + 'px';
+        popupElement.style.top = (e.clientY - 50) + 'px';
         popupElement.style.left = (e.clientX + 10) + 'px';
         popupElement.style.visibility = 'visible';
         e.target.classList.add('highlighted');

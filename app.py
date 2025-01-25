@@ -46,26 +46,31 @@ def get_sarcasm_analysis(text):
     Ensure your analysis is sentence-specific and follows the requested format for each sentence.
     Provide a confidence level for each determination to indicate the certainty of your analysis.
     """
-    response = model.generate_content(prompt)
-    if response.candidates and response.candidates[0].content.parts:
-        raw_analysis = response.candidates[0].content.parts[0].text.strip()
-        sentence_analyses = []
-        sentences = raw_analysis.split('Sentence ')
-        for sentence_block in sentences[1:]: # Skip the first empty element
-            lines = sentence_block.split('\n')
-            if len(lines) >= 4:
-                sentence_text = lines[0].split(': ', 1)[1].strip().replace('"', '')
-                sarcasm_detected = lines[1].split(': ', 1)[1].strip()
-                confidence_level = lines[2].split(': ', 1)[1].strip()
-                explanation = lines[3].split(': ', 1)[1].strip() if len(lines) > 3 else "No explanation provided"
-                sentence_analyses.append({
-                    'sentence': sentence_text,
-                    'sarcasm': sarcasm_detected,
-                    'confidence': confidence_level,
-                    'explanation': explanation
-                })
-        return sentence_analyses
-    return [{"error": "Could not get response from AI."}]
+    try:
+        response = model.generate_content(prompt)
+        if response.candidates and response.candidates[0].content.parts:
+            raw_analysis = response.candidates[0].content.parts[0].text.strip()
+            sentence_analyses = []
+            sentences = raw_analysis.split('Sentence ')
+            for sentence_block in sentences[1:]: # Skip the first empty element
+                lines = sentence_block.split('\n')
+                if len(lines) >= 4:
+                    sentence_text = lines[0].split(': ', 1)[1].strip().replace('"', '')
+                    sarcasm_detected = lines[1].split(': ', 1)[1].strip()
+                    confidence_level = lines[2].split(': ', 1)[1].strip()
+                    explanation = lines[3].split(': ', 1)[1].strip() if len(lines) > 3 else "No explanation provided"
+                    # Remove percentage symbol from confidence level if present
+                    confidence_level = confidence_level.replace('%', '').strip()
+                    sentence_analyses.append({
+                        'sentence': sentence_text,
+                        'sarcasm': sarcasm_detected,
+                        'confidence': confidence_level,
+                        'explanation': explanation
+                    })
+            return sentence_analyses
+        return [{"error": "Could not get response from AI."}]
+    except Exception as e:
+        return [{"error": f"Error communicating with AI: {str(e)}"}]
 
 @app.route('/', methods=['GET'])
 def index():

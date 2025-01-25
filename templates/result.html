@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sarcasm Analysis Result</title>
+    <title>Sarcasm Detection Result</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,75 +40,92 @@
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
+            background-color: #292929; /* Sentence background color */
         }
         .sentence:hover {
-            background-color: #292929; /* Slightly lighter background on hover */
+            background-color: #383838; /* Slightly lighter background on hover */
         }
         .highlighted {
             background-color: #bb86fc; /* Highlight color */
             color: #121212; /* Dark text on highlight */
         }
-        .popup {
-            position: fixed;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #292929; /* Darker popup background */
-            color: #e0e0e0;
-            border: 1px solid #bb86fc; /* Purple-blue border */
-            padding: 15px;
+        #popup {
+            position: relative; /* Relative positioning for bottom placement */
+            width: 100%;    /* Full width */
+            background-color: lightblue;
+            border: 1px solid black;
+            padding: 15px; /* Increased padding for better visibility */
             z-index: 10;
             visibility: hidden;
-            width: 400px; /* Wider popup */
-            max-height: 70vh;
-            overflow-y: auto;
-            border-radius: 10px; /* Rounded corners for popup */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
-            text-align: left; /* Align text in popup to left */
+            text-align: center; /* Center text within the popup */
+            margin-top: 20px; /* Add margin to separate from sentences */
         }
-        .popup::before {
-            content: '';
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -10px;
-            border-width: 10px;
-            border-style: solid;
-            border-color: transparent transparent #292929 transparent; /* Dark arrow */
+        /* Result specific styles */
+        #result-container {
+            background-color: #292929;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px;
         }
-        .popup strong {
-            color: #bb86fc; /* Highlight color for strong text in popup */
+        #result-container h2 {
+            color: #e0e0e0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #result-container p {
+            color: #e0e0e0;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Sarcasm Analysis</h1>
+    <h1>Sarcasm Analysis Result</h1>
 
-    <div id="sentences-container">
-        {% for item in analysis %}
-        <div class="sentence-container">
-            <span class="sentence"
-                  data-sarcasm="{{ item.sarcasm }}"
-                  data-confidence="{{ item.confidence }}"
-                  data-explanation="{{ item.explanation }}"
-                  >{{ item.sentence }}</span>
-            <div class="popup" id="popup-{{ loop.index }}"></div>
+    <div id="result-container">
+        <h2>Original Text:</h2>
+        <p>{{ original_text }}</p>
+
+        <div id="sentences-container">
+            {% if analysis and analysis[0].error %}
+                <p><strong>Error:</strong> {{ analysis[0].error }}</p>
+            {% elif analysis %}
+                {% for item in analysis %}
+                <div class="sentence-container">
+                    <span class="sentence"
+                          data-sarcasm="{{ item.sarcasm }}"
+                          data-confidence="{{ item.confidence }}"
+                          data-explanation="{{ item.explanation }}"
+                          >{{ item.sentence }}</span>
+                    <div class="popup" id="popup-{{ loop.index }}">
+                        <strong>Sarcasm:</strong> {{ item.sarcasm }}<br>
+                        <strong>Confidence:</strong> {{ item.confidence }}%<br>
+                        <strong>Explanation:</strong> {{ item.explanation }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No analysis available.</p>
+            {% endif %}
         </div>
-        {% endfor %}
+        <div id="popup"></div>
     </div>
 
     <a href="/">Analyze Another Text</a>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sentenceSpans = document.querySelectorAll('.sentence');
 
             sentenceSpans.forEach(span => {
                 span.addEventListener('mouseover', function(e) {
-                    const popup = this.nextElementSibling;
-                    const sarcasm = this.getAttribute('data-sarcasm');
-                    const confidence = this.getAttribute('data-confidence');
-                    const explanation = this.getAttribute('data-explanation');
+                    const popup = span.nextElementSibling;
+                    if (!popup || !popup.classList.contains('popup')) return; // Check if next sibling is the popup
+
+                    const sarcasm = span.getAttribute('data-sarcasm');
+                    const confidence = span.getAttribute('data-confidence');
+                    const explanation = span.getAttribute('data-explanation');
 
                     let popupContent = `<strong>Sarcasm:</strong> ${sarcasm}<br><strong>Confidence:</strong> ${confidence}%<br><strong>Explanation:</strong> ${explanation}`;
                     if (sarcasm.toLowerCase() === 'no') {
@@ -117,13 +134,16 @@
 
                     popup.innerHTML = popupContent;
                     popup.style.visibility = 'visible';
-                    this.classList.add('highlighted');
+                    span.classList.add('highlighted');
                 });
 
-                span.addEventListener('mouseout', function(e) {
-                    const popup = this.nextElementSibling;
-                    popup.style.visibility = 'hidden';
-                    this.classList.remove('highlighted');
+                sentenceSpans.forEach(span => {
+                    span.addEventListener('mouseout', function(e) {
+                        const popup = span.nextElementSibling;
+                        if (!popup || !popup.classList.contains('popup')) return; // Check if next sibling is the popup
+                        popup.style.visibility = 'hidden';
+                        span.classList.remove('highlighted');
+                    });
                 });
             });
         });
