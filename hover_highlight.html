@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Word Hover Highlight</title>
+<style>
+  .highlighted {
+    background-color: yellow;
+  }
+</style>
+</head>
+<body>
+
+<div></div>
+
+<p id="randomText">
+  This is some random text to demonstrate the hover highlight effect.
+  When you move your mouse over a sentence, a popup will appear.
+  This is achieved using JavaScript and CSS.
+  Here is another sentence. And yet another one for good measure!
+</p>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const randomTextElement = document.getElementById('randomText');
+    const popupElement = document.getElementById('popup');
+    // Split text into sentences
+    const sentences = randomTextElement.textContent.split(/(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|!)\s/g);
+
+    // Wrap each sentence in a span
+    randomTextElement.innerHTML = sentences.map(sentence => `<span>${sentence}</span>`).join(' ');
+
+    randomTextElement.addEventListener('mouseover', function(e) {
+      if (e.target.tagName === 'SPAN') {
+        const sentenceText = e.target.textContent;
+        popupElement.textContent = sentenceText;
+        popupElement.style.top = (e.clientY - 50) + 'px';
+        popupElement.style.left = (e.clientX + 10) + 'px';
+        popupElement.style.visibility = 'visible';
+        e.target.classList.add('highlighted');
+      }
+    });
+
+    randomTextElement.addEventListener('mouseout', function(e) {
+      if (e.target.tagName === 'SPAN') {
+        popupElement.style.visibility = 'hidden';
+        e.target.classList.remove('highlighted');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

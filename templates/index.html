@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sarcasm Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #bb86fc; /* Purple-blue for heading */
+        }
+        form {
+            background-color: #292929; /* Darker form background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            max-width: 600px;
+        }
+        label {
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        textarea {
+            background-color: #383838;
+            color: #e0e0e0;
+            border: 1px solid #505050;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #bb86fc; /* Purple-blue submit button */
+            color: #121212; /* Dark text on button */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        input[type="submit"]:hover {
+            background-color: #c797fc; /* Lighter purple-blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Sarcasm Detector</h1>
+    <form action="/check_sarcasm" method="post">
+        <label for="text_input">Enter Text:</label><br>
+        <textarea id="text_input" name="text" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Check Sarcasm">
+    </form>
+</body>
+</html>

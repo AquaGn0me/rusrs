@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sarcasm Detection Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #bb86fc; /* Purple-blue for heading */
+        }
+        a {
+            color: #3700b3; /* Blue for links */
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #sentences-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .sentence-container {
+            position: relative;
+            display: block; /* Display sentences in block */
+            margin-bottom: 10px; /* Space between sentences */
+        }
+        .sentence {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #292929; /* Sentence background color */
+        }
+        .sentence:hover {
+            background-color: #383838; /* Slightly lighter background on hover */
+        }
+        .highlighted {
+            background-color: #bb86fc; /* Highlight color */
+            color: #121212; /* Dark text on highlight */
+        }
+        #popup {
+            position: relative; /* Relative positioning for bottom placement */
+            width: 100%;    /* Full width */
+            background-color: lightblue;
+            border: 1px solid black;
+            padding: 15px; /* Increased padding for better visibility */
+            z-index: 10;
+            visibility: hidden;
+            text-align: center; /* Center text within the popup */
+            margin-top: 20px; /* Add margin to separate from sentences */
+        }
+        /* Result specific styles */
+        #result-container {
+            background-color: #292929;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        #result-container h2 {
+            color: #e0e0e0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #result-container p {
+            color: #e0e0e0;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sarcasm Analysis Result</h1>
+
+    <div id="result-container">
+        <h2>Original Text:</h2>
+        <p>{{ original_text }}</p>
+
+        <div id="sentences-container">
+            {% if analysis and analysis[0].error %}
+                <p><strong>Error:</strong> {{ analysis[0].error }}</p>
+            {% elif analysis %}
+                {% for item in analysis %}
+                <div class="sentence-container">
+                    <span class="sentence"
+                          data-sarcasm="{{ item.sarcasm }}"
+                          data-confidence="{{ item.confidence }}"
+                          data-explanation="{{ item.explanation }}"
+                          >{{ item.sentence }}</span>
+                    <div class="popup" id="popup-{{ loop.index }}">
+                        <strong>Sarcasm:</strong> {{ item.sarcasm }}<br>
+                        <strong>Confidence:</strong> {{ item.confidence }}%<br>
+                        <strong>Explanation:</strong> {{ item.explanation }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No analysis available.</p>
+            {% endif %}
+        </div>
+        <div id="popup"></div>
+    </div>
+
+    <a href="/">Analyze Another Text</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sentenceSpans = document.querySelectorAll('.sentence');
+
+            sentenceSpans.forEach(span => {
+                span.addEventListener('mouseover', function(e) {
+                    const popup = span.nextElementSibling;
+                    if (!popup || !popup.classList.contains('popup')) return; // Check if next sibling is the popup
+
+                    const sarcasm = span.getAttribute('data-sarcasm');
+                    const confidence = span.getAttribute('data-confidence');
+                    const explanation = span.getAttribute('data-explanation');
+
+                    let popupContent = `<strong>Sarcasm:</strong> ${sarcasm}<br><strong>Confidence:</strong> ${confidence}%<br><strong>Explanation:</strong> ${explanation}`;
+                    if (sarcasm.toLowerCase() === 'no') {
+                        popupContent = "<strong>No sarcasm detected.</strong>";
+                    }
+
+                    popup.innerHTML = popupContent;
+                    popup.style.visibility = 'visible';
+                    span.classList.add('highlighted');
+                });
+
+                sentenceSpans.forEach(span => {
+                    span.addEventListener('mouseout', function(e) {
+                        const popup = span.nextElementSibling;
+                        if (!popup || !popup.classList.contains('popup')) return; // Check if next sibling is the popup
+                        popup.style.visibility = 'hidden';
+                        span.classList.remove('highlighted');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
