@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request
 import google.generativeai as genai
 import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
 # Configure Gemini API - Replace with your actual API key
+
+load_dotenv()
+
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
     raise ValueError("No GOOGLE_API_KEY environment variable set. Please set it before running the app.")
