@@ -2,14 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarcasm Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <header>r-u-srs?</header>
     <h1>Sarcasm Detector</h1>
-    <form action="/check_sarcasm" method="post">
-        <label for="text_input">Enter Text:</label><br>
-        <textarea id="text_input" name="text" rows="4" cols="50"></textarea><br><br>
-        <input type="submit" value="Check Sarcasm">
-    </form>
+    <div class="container">
+        <!-- Left Div: Input Textbox -->
+        <div class="input-container">
+            <form id="sarcasmForm">
+                <label for="text_input">Enter Text:</label><br>
+                <textarea id="text_input" name="text" rows="4" cols="50"></textarea><br><br>
+                <button type="submit">Check Sarcasm</button>
+            </form>
+        </div>
+
+        <!-- Right Div: Output Stats -->
+        <div class="output-container" id="outputStats">
+            <h2>Sarcasm Stats</h2>
+            <p>Results will appear here.</p>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('sarcasmForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            // Get the input text
+            const text = document.getElementById('text_input').value;
+
+            // Send the text to the server using Fetch API
+            fetch('/check_sarcasm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `text=${encodeURIComponent(text)}`
+            })
+            .then(response => response.json()) // Parse the JSON response
+            .then(data => {
+                // Update the output div with the results
+                const outputDiv = document.getElementById('outputStats');
+                outputDiv.innerHTML = `
+                    <h2>Sarcasm Stats</h2>
+                    <p><strong>Input Text:</strong> ${data.text}</p>
+                    <p><strong>Sarcastic:</strong> ${data.sarcastic ? 'Yes' : 'No'}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>

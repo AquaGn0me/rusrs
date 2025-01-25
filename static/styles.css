@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0px;
+    background-color: #071122;
+}
+
+header {
+    background-color: #001232;
+    color: white;
+    padding: 15px;
+    margin: 0;
+    text-align: left;
+    border-bottom: 2px solid white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.container {
+    display: flex; /* Use flexbox for layout */
+    gap: 40px; /* Space between the two divs */
+}
+
+.input-container, .output-container {
+    flex: 1; /* Each container takes equal width */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #0F1A2E;
+}
+
+textarea {
+    width: 92%;
+    height: 150px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+.output-container {
+    background-color: #f9f9f9; /* Light background for the output */
+}

@@ -1,14 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# Configure Gemini API - Replace with your actual API key
-
+# Configure Gemini API
 load_dotenv()
-
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
     raise ValueError("No GOOGLE_API_KEY environment variable set. Please set it before running the app.")
@@ -30,7 +28,11 @@ def index():
 def check_sarcasm():
     text = request.form['text']
     sarcastic = is_sarcastic(text)
-    return render_template('result.html', text=text, sarcastic=sarcastic)
+    # Return JSON response instead of rendering a template
+    return jsonify({
+        'text': text,
+        'sarcastic': sarcastic
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
