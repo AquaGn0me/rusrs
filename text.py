@@ -3,7 +3,10 @@ test_text = "I love coming to the office. I love how there is no natural light, 
 prompt= f""""
 
     You are an advanced AI trained to analyze text for sarcasm. Your task is to evaluate 
-    an entire block of text, identify any portions that might be sarcastic, and analyze them.
+    an entire block of text, identify any portions that might be sarcastic, and analyze them. 
+    Maintain consistency, coherence, and accuracy in your analysis. The same input should elicit the same output every time.
+    If there is not enough context to make an accurate determination, for example if only a single word is inputted, reply with:
+    **UNSURE**
 
     Definition of Sarcasm: Sarcasm is a form of verbal irony where a speaker conveys the 
     opposite of their literal meaning, often in a mocking or exaggerated tone.
