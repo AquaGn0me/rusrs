@@ -52,23 +52,41 @@ def get_sarcasm_analysis(text):
             raw_analysis = response.candidates[0].content.parts[0].text.strip()
             sentence_analyses = []
             sentences = raw_analysis.split('Sentence ')
+            sentence_analyses = []
             for sentence_block in sentences[1:]: # Skip the first empty element
-                lines = sentence_block.split('\n')
+                lines = sentence_block.strip().split('\n')
                 if len(lines) >= 4:
-                    sentence_text = lines[0].split(': ', 1)[1].strip().replace('"', '')
-                    sarcasm_detected = lines[1].split(': ', 1)[1].strip()
-                    confidence_level = lines[2].split(': ', 1)[1].strip()
-                    explanation = lines[3].split(': ', 1)[1].strip() if len(lines) > 3 else "No explanation provided"
-                    # Remove percentage symbol from confidence level if present
-                    confidence_level = confidence_level.replace('%', '').strip()
-                    sentence_analyses.append({
-                        'sentence': sentence_text,
-                        'sarcasm': sarcasm_detected,
-                        'confidence': confidence_level,
-                        'explanation': explanation
-                    })
+                    try:
+                        sentence_text_line = lines[0].split(': ', 1)
+                        sarcasm_detected_line = lines[1].split(': ', 1)
+                        confidence_level_line = lines[2].split(': ', 1)
+                        explanation_line = lines[3].split(': ', 1)
+
+                        if len(sentence_text_line) != 2 or len(sarcasm_detected_line) != 2 or len(confidence_level_line) != 2:
+                            print(f"Warning: Unexpected line format in sentence block: {lines}")
+                            continue # Skip to next sentence block
+
+                        sentence_text = sentence_text_line[1].strip().replace('"', '')
+                        sarcasm_detected = sarcasm_detected_line[1].strip()
+                        confidence_level = confidence_level_line[1].strip()
+                        explanation = explanation_line[1].strip() if len(lines) > 3 and len(explanation_line) == 2 else "No explanation provided"
+
+                        # Remove percentage symbol from confidence level if present
+                        confidence_level = confidence_level.replace('%', '').strip()
+                        sentence_analyses.append({
+                            'sentence': sentence_text,
+                            'sarcasm': sarcasm_detected,
+                            'confidence': confidence_level,
+                            'explanation': explanation
+                        })
+                    except IndexError as e:
+                        print(f"IndexError parsing sentence block: {lines}. Error: {e}")
+                        continue # Skip to the next sentence block
+                else:
+                    print(f"Warning: Sentence block with fewer than 4 lines: {lines}")
+                    continue # Skip to the next sentence block
             return sentence_analyses
-        return [{"error": "Could not get response from AI."}]
+        return [{"error": "Could not get response from AI - unexpected format."}]
     except Exception as e:
         return [{"error": f"Error communicating with AI: {str(e)}"}]
 
