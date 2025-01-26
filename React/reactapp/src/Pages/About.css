@@ -1,0 +1,72 @@
+/* General Reset to avoid unwanted spacing */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  /* About Page Styling */
+  .About {
+    font-family: 'DM Sans', sans-serif;
+    background-color: rgb(58, 95, 95);
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px 20px 20px 0px;
+    box-sizing: border-box;
+    color: beige;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
+  /* Title Styling */
+  h1 {
+    text-align: center;
+    color: beige;
+    font-size: 1rem;
+    margin-bottom: 30px;
+    margin-top: 10; /* No space at the top */
+  }
+  
+  
+  /* About Box Styling */
+  .about-box {
+    background-color: rgb(73, 119, 119);  /* Similar to the 'person' boxes in Contact */
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;  /* You can adjust this based on how wide you want it */
+    max-width: 1000px;
+    color: beige;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .about-box p {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    text-align: justify;  /* Makes the text spread nicely across the width */
+  }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .about-box {
+      width: 95%;
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    .subtitle {
+      font-size: 1.4rem;
+    }
+  
+    .about-box p {
+      font-size: 1rem;
+    }
+  }
+  
+
+  

@@ -1,0 +1,82 @@
+/* Reset any default margin/padding around the entire page */
+body {
+    margin: 0;  /* No margin */
+    padding: 0; /* No padding */
+    overflow-x: hidden;  /* Prevent horizontal scrolling */
+  }
+  
+  /* The Contact page container (and any other similar containers) */
+  .Contact {
+    font-family: 'DM Sans', sans-serif;
+    background-color: rgb(58, 95, 95);
+    width: 100%;
+    min-height: 100vh;  /* Ensure at least 100% height of the viewport */
+    padding: 0px;  /* Padding only on the left and right */
+    box-sizing: border-box;
+    color: beige;
+    margin: 20;  /* Remove margin */
+    overflow-x: hidden;  /* Prevent horizontal overflow */
+    overflow-y: auto;  /* Allow vertical scrolling if needed */
+  }
+
+  
+  /* Heading 1 styling */
+  h1 {
+    text-align: center;
+    color: beige;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    margin-top: 10;  /* Remove default top margin on h1 */
+    margin-left: auto;
+  }
+  
+  /* Person section */
+  .person {
+    background-color: rgb(73, 119, 119);
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 35%;
+    max-width: 550px;
+  }
+  
+  /* Social link styling */
+  .social-links {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-links a {
+    color: rgb(57, 42, 134);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s ease-in-out, font-size 0.5s ease;
+  }
+  
+  .social-links a:hover {
+    color: #8a2be2;
+    cursor: pointer;
+    font-size: 1.03rem;
+  }
+  
+  /* For smaller screens */
+  @media (max-width: 768px) {
+    .person {
+      width: 95%;
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    .person h2 {
+      font-size: 1.5rem;
+    }
+  
+    .person p {
+      font-size: 0.9rem;
+    }
+  }
+  
