@@ -5,7 +5,7 @@ export function About() {
     return (
         <div className="Home">
             <Navbar/>
-            <h1>About Our Project</h1>
+            <h1>About R-U-SERIO.US</h1>
             
             {/* About section with a blurb */}
             <div className="about-box">
