@@ -27,3 +27,23 @@ h2 {
   color:beige;
 }
   */
+
+textarea {
+  background-color: beige;
+  color: black;
+  font-size: 1.5rem;
+  width: 500px;
+  height: 200px;
+}
+
+.main_stack {
+  display: flex;
+  width: 500px;
+  align-items: center;
+  padding-left: 500px;
+}
+
+button {
+  background-color: darkgray;
+  font-size: 2rem;
+}
