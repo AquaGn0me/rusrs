@@ -34,6 +34,8 @@ textarea {
   font-size: 1.5rem;
   width: 500px;
   height: 200px;
+  border-radius: 8px;
+  padding: 10px;
 }
 
 .main_stack {
@@ -44,6 +46,6 @@ textarea {
 }
 
 button {
-  background-color: darkgray;
+  background-color: rgb(128, 127, 142);
   font-size: 2rem;
 }
