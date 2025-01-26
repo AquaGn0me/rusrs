@@ -15,8 +15,8 @@ export function Home() {
                         <button type='submit'>Check Sarcasm</button>
                     </form>                
                 </h1>
-
             </div>
-        </div>
-    )
+          </navbar>
+      </div>
+  )
 }
