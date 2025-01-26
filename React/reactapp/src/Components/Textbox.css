@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&display=swap');
+
+.Textbox {
+    font-family: 'DM Sans', sans-serif;
+    color: aliceblue;
+    background-color: #333;  /* Adds a background color */
+    padding: 20px;
+    width: 300px;  /* Sets a fixed width */
+    margin: 50px auto;  /* Centers the box horizontally */
+    text-align: center;  /* Centers the text inside */
+    border-radius: 10px;  /* Optional: adds rounded corners */
+}
+
+.Textbox input {
+    background-color: #444;  /* Background color for the input box */
+    color: white;  /* Text color inside the input */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;  /* Adds space between input and text */
+    border-radius: 5px;  /* Optional: rounded corners for the input */
+}
+
+.Textbox p {
+    margin-top: 20px;  /* Adds space between input and displayed text */
+    font-size: 16px;
+}
