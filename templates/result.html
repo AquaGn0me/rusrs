@@ -3,11 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <title>Sarcasm Detection Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #bb86fc; /* Purple-blue for heading */
+        }
+        a {
+            color: #33059f; /* Blue for links */
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #sentences-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .sentence-container {
+            position: relative;
+            display: block; /* Display sentences in block */
+            margin-bottom: 10px; /* Space between sentences */
+        }
+        .sentence {
+            display: inline;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #292929; /* Sentence background color */
+        }
+        .sentence:hover {
+            background-color: #383838; /* Slightly lighter background on hover */
+        }
+        .highlighted {
+            background-color: #bb86fc; /* Highlight color */
+            color: #121212; /* Dark text on highlight */
+        }
+        #popup {
+            position: absolute; /* Absolute position to position relative to the word */
+            top: 100%; /* Position below the word */
+            left: 0; /* Align to the left of the word */
+            transform: translateY(10px); /* সামান্য নিচে নামানোর জন্য */
+            background-color: #673ab7; /* Purple background color */
+            color: #e0e0e0; /* Light text color */
+            border: 1px solid #bb86fc; /* Border color to match heading */
+            padding: 20px; /* Padding for better spacing */
+            border-radius: 10px; /* Rounded corners */
+            z-index: 1000; /* Ensure it's on top of other content */
+            visibility: hidden; /* Initially hidden */
+            text-align: center; /* Center text */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6); /* Shadow for depth */
+            width: 80%; /* Set width */
+             /* Maximum width for readability */
+            display: block;
+        }
+        /* Result specific styles */
+        #result-container {
+            background-color: #292929;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            width: 80%;
+            margin-top: 20px;
+        }
+        #result-container h2 {
+            color: #e0e0e0;
+            text-align: center;
+            display: block;
+            margin-bottom: 20px;
+        }
+        #result-container p {
+            color: #e0e0e0;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Sarcasm Detection Result</h1>
-    <p><strong>Text:</strong> {{ text }}</p>
-    <p><strong>Sarcastic:</strong> {% if sarcastic %}Yes{% else %}No{% endif %}</p>
-    <a href="/">Check another text</a>
+    <h1>Sarcasm Analysis Result</h1>
+
+    <div id="result-container">
+        <h2>Original Text:</h2>
+        <div id="original-text-container">
+            {% if analysis and analysis[0].error %}
+                <p><strong>Error:</strong> {{ analysis[0].error }}</p>
+            {% elif analysis %}
+                <div id="sentences-container">
+                {% for item in analysis %}
+                    <div class="sentence-container">
+                        <span class="sentence"
+                              data-sarcasm="{{ item.sarcasm }}"
+                              data-confidence="{{ item.confidence }}"
+                              data-explanation="{{ item.explanation }}"
+                              >{{ item.sentence }} </span>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p>No analysis available.</p>
+            {% endif %}
+        </div>
+        <div id="popup" style="position: fixed; top: 350px; left: 50%; transform: translateX(-50%); background-color: #673ab7; color: #e0e0e0; border: 1px solid #bb86fc; padding: 20px; border-radius: 10px; z-index: 1000; visibility: hidden; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.6); width: 80%; max-width: 500px;"></div>
+    </div>
+
+    <a href="/">Analyze Another Text</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sentenceSpans = document.querySelectorAll('#sentences-container .sentence');
+
+            sentenceSpans.forEach(span => {
+                span.addEventListener('mouseover', function(e) {
+                    const popup = document.getElementById('popup');
+                    if (!popup) return;
+
+                    const sarcasm = span.getAttribute('data-sarcasm');
+                    const confidence = span.getAttribute('data-confidence');
+                    const explanation = span.getAttribute('data-explanation');
+
+                    let popupContent = `<strong>Sarcasm:</strong> ${sarcasm}<br><strong>Confidence:</strong> ${confidence}%<br><strong>Explanation:</strong> ${explanation}`;
+                    if (sarcasm.toLowerCase() === 'no') {
+                        popupContent = "<strong>No sarcasm detected.</strong>";
+                    }
+
+                    popup.innerHTML = popupContent;
+                    popup.style.visibility = 'visible';
+                    span.classList.add('highlighted');
+                });
+
+                span.addEventListener('mouseout', function(e) {
+                    const popup = document.getElementById('popup');
+                    if (!popup) return;
+                    popup.style.visibility = 'hidden';
+                    span.classList.remove('highlighted');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
