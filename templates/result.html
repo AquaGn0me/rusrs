@@ -36,7 +36,7 @@
             margin-bottom: 10px; /* Space between sentences */
         }
         .sentence {
-            display: inline-block;
+            display: inline;
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
@@ -64,7 +64,8 @@
             text-align: center; /* Center text */
             box-shadow: 0 4px 8px rgba(0,0,0,0.6); /* Shadow for depth */
             width: 80%; /* Set width */
-            max-width: 500px; /* Maximum width for readability */
+             /* Maximum width for readability */
+            display: block;
         }
         /* Result specific styles */
         #result-container {
@@ -73,12 +74,12 @@
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.4);
             width: 80%;
-            max-width: 800px;
             margin-top: 20px;
         }
         #result-container h2 {
             color: #e0e0e0;
             text-align: center;
+            display: block;
             margin-bottom: 20px;
         }
         #result-container p {
