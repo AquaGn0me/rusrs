@@ -31,18 +31,12 @@
 
     randomTextElement.addEventListener('mouseover', function(e) {
       if (e.target.tagName === 'SPAN') {
-        const sentenceText = e.target.textContent;
-        popupElement.textContent = sentenceText;
-        popupElement.style.top = (e.clientY - 50) + 'px';
-        popupElement.style.left = (e.clientX + 10) + 'px';
-        popupElement.style.visibility = 'visible';
         e.target.classList.add('highlighted');
       }
     });
 
     randomTextElement.addEventListener('mouseout', function(e) {
       if (e.target.tagName === 'SPAN') {
-        popupElement.style.visibility = 'hidden';
         e.target.classList.remove('highlighted');
       }
     });

@@ -18,7 +18,7 @@
             color: #bb86fc; /* Purple-blue for heading */
         }
         a {
-            color: #3700b3; /* Blue for links */
+            color: #33059f; /* Blue for links */
             text-decoration: none;
             margin-top: 20px;
             display: inline-block;
@@ -50,15 +50,21 @@
             color: #121212; /* Dark text on highlight */
         }
         #popup {
-            position: relative; /* Relative positioning for bottom placement */
-            width: 100%;    /* Full width */
-            background-color: lightblue;
-            border: 1px solid black;
-            padding: 15px; /* Increased padding for better visibility */
-            z-index: 10;
-            visibility: hidden;
-            text-align: center; /* Center text within the popup */
-            margin-top: 20px; /* Add margin to separate from sentences */
+            position: absolute; /* Absolute position to position relative to the word */
+            top: 100%; /* Position below the word */
+            left: 0; /* Align to the left of the word */
+            transform: translateY(10px); /* সামান্য নিচে নামানোর জন্য */
+            background-color: #673ab7; /* Purple background color */
+            color: #e0e0e0; /* Light text color */
+            border: 1px solid #bb86fc; /* Border color to match heading */
+            padding: 20px; /* Padding for better spacing */
+            border-radius: 10px; /* Rounded corners */
+            z-index: 1000; /* Ensure it's on top of other content */
+            visibility: hidden; /* Initially hidden */
+            text-align: center; /* Center text */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6); /* Shadow for depth */
+            width: 80%; /* Set width */
+            max-width: 500px; /* Maximum width for readability */
         }
         /* Result specific styles */
         #result-container {
@@ -86,42 +92,37 @@
 
     <div id="result-container">
         <h2>Original Text:</h2>
-        <p>{{ original_text }}</p>
-
-        <div id="sentences-container">
+        <div id="original-text-container">
             {% if analysis and analysis[0].error %}
                 <p><strong>Error:</strong> {{ analysis[0].error }}</p>
             {% elif analysis %}
+                <div id="sentences-container">
                 {% for item in analysis %}
-                <div class="sentence-container">
-                    <span class="sentence"
-                          data-sarcasm="{{ item.sarcasm }}"
-                          data-confidence="{{ item.confidence }}"
-                          data-explanation="{{ item.explanation }}"
-                          >{{ item.sentence }}</span>
-                    <div class="popup" id="popup-{{ loop.index }}">
-                        <strong>Sarcasm:</strong> {{ item.sarcasm }}<br>
-                        <strong>Confidence:</strong> {{ item.confidence }}%<br>
-                        <strong>Explanation:</strong> {{ item.explanation }}
+                    <div class="sentence-container">
+                        <span class="sentence"
+                              data-sarcasm="{{ item.sarcasm }}"
+                              data-confidence="{{ item.confidence }}"
+                              data-explanation="{{ item.explanation }}"
+                              >{{ item.sentence }} </span>
                     </div>
-                </div>
                 {% endfor %}
+                </div>
             {% else %}
                 <p>No analysis available.</p>
             {% endif %}
         </div>
-        <div id="popup"></div>
+        <div id="popup" style="position: fixed; top: 350px; left: 50%; transform: translateX(-50%); background-color: #673ab7; color: #e0e0e0; border: 1px solid #bb86fc; padding: 20px; border-radius: 10px; z-index: 1000; visibility: hidden; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.6); width: 80%; max-width: 500px;"></div>
     </div>
 
     <a href="/">Analyze Another Text</a>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const sentenceSpans = document.querySelectorAll('.sentence');
+            const sentenceSpans = document.querySelectorAll('#sentences-container .sentence');
 
             sentenceSpans.forEach(span => {
                 span.addEventListener('mouseover', function(e) {
-                    const popup = span.nextElementSibling;
-                    if (!popup || !popup.classList.contains('popup')) return; // Check if next sibling is the popup
+                    const popup = document.getElementById('popup');
+                    if (!popup) return;
 
                     const sarcasm = span.getAttribute('data-sarcasm');
                     const confidence = span.getAttribute('data-confidence');
@@ -137,13 +138,11 @@
                     span.classList.add('highlighted');
                 });
 
-                sentenceSpans.forEach(span => {
-                    span.addEventListener('mouseout', function(e) {
-                        const popup = span.nextElementSibling;
-                        if (!popup || !popup.classList.contains('popup')) return; // Check if next sibling is the popup
-                        popup.style.visibility = 'hidden';
-                        span.classList.remove('highlighted');
-                    });
+                span.addEventListener('mouseout', function(e) {
+                    const popup = document.getElementById('popup');
+                    if (!popup) return;
+                    popup.style.visibility = 'hidden';
+                    span.classList.remove('highlighted');
                 });
             });
         });
