@@ -1,0 +1,87 @@
+/* Import Google font */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&display=swap');
+
+/* Remove underline for links */
+a {
+    text-decoration: none;
+    color: beige;
+}
+
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;  /* Spaces out logo/title from nav links */
+    align-items: center;
+    background-color: cadetblue;
+    padding: 10px 30px;
+    color: beige;
+    font-family: 'DM Sans';
+    width: 100vw;
+    margin-right: 20px;
+}
+
+/* Left section: Logo + Project Title */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;  /* Space between logo and title */
+}
+
+/* Styling for the logo */
+.navbar-logo svg {
+    transform: scaleX(-0.9) rotate(-10deg);
+    transition: 0.4s ease-in-out;
+}
+
+/* Hover effect on logo */
+.chaticon:hover {
+    transform: scaleX(-0.9) rotate(-30deg);
+}
+
+.chaticon {
+    cursor: pointer;
+}
+
+/* Project title styling */
+.navbar-title h1 {
+    font-size: 2.3rem;
+    margin-left: 30px;
+    margin-top:30px;
+    color: beige;
+    font-weight: bold;
+    transition: color 0.5s ease, font-size 0.5s ease;
+}
+
+.navbar-title h1 a {
+    text-decoration: none;  /* Remove underline */
+    color: inherit;         /* Inherit color from h1 */
+}
+
+.navbar-title h1:hover {
+    color: beige; /* Change color to red */
+    font-size: 2.65rem; /* Increase font size */
+    cursor: pointer; /* Make the cursor a pointer to indicate it's clickable */
+}
+
+/* Navbar links container */
+.navbar-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding-right: 20px;
+}
+
+/* Navbar link styling */
+.nav-item {
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: 0.5s;
+    padding: 10px;
+}
+
+/* Align navbar links to the right */
+.navbar-list {
+    margin-left: auto;  /* Pushes the navbar links to the right */
+    margin-right: 30px;
+}
+

@@ -1,4 +1,4 @@
-run:
+To Run:
 
 python -m venv venv
 venv\Scripts\activate
